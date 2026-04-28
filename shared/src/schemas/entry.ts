@@ -30,3 +30,10 @@ const LinkEntrySchema = z.object({
   createdAt: z.iso.datetime(),
   updatedAt: z.iso.datetime(),
 });
+
+const LinkEntryInputSchema = LinkEntrySchema.omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+  updatedAt: true,
+});
