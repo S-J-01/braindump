@@ -37,3 +37,6 @@ const LinkEntryInputSchema = LinkEntrySchema.omit({
   createdAt: true,
   updatedAt: true,
 });
+
+const EntrySchema = z.discriminatedUnion("type", [LinkEntrySchema]);
+const EntryInputSchema = z.discriminatedUnion("type", [LinkEntryInputSchema]);
