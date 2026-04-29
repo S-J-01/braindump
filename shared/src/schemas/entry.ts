@@ -40,3 +40,11 @@ const LinkEntryInputSchema = LinkEntrySchema.omit({
 
 const EntrySchema = z.discriminatedUnion("type", [LinkEntrySchema]);
 const EntryInputSchema = z.discriminatedUnion("type", [LinkEntryInputSchema]);
+
+type Entry = z.infer<typeof EntrySchema>;
+type EntryInput = z.infer<typeof EntryInputSchema>;
+type LinkEntry = z.infer<typeof LinkEntrySchema>;
+type LinkEntryInput = z.infer<typeof LinkEntryInputSchema>;
+
+export { EntrySchema, EntryInputSchema, LinkEntrySchema, LinkEntryInputSchema };
+export type { Entry, EntryInput, LinkEntry, LinkEntryInput };
