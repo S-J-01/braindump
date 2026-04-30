@@ -6,3 +6,5 @@ dist/
 .vite
 coverage
 .turbo
+.env*.local
+.env.production
