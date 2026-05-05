@@ -2,8 +2,10 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
+    "moduleResolution": "Node",
     "rootDir": "./src",
     "outDir": "./dist",
+    "types": ["node"],
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src"]
