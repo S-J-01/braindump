@@ -5,7 +5,11 @@ const envSchema = z.object({
   PORT: z.coerce.number(),
   MONGODB_URI: z.url(),
   JWT_SECRET: z.string().trim().min(1),
-  JWT_EXPIRES_IN: z.string().trim().min(1),
+  JWT_EXPIRES_IN: z
+    .string()
+    .trim()
+    .min(1)
+    .regex(/^\d+(ms|[smhdwy])$/),
 });
 
 export const env = envSchema.parse(process.env);
