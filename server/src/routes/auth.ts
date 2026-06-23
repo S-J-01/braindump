@@ -11,7 +11,7 @@ import { comparePassword, hashPassword } from "../lib/auth/hash";
 import { signAuthToken } from "../lib/auth/token";
 import { env } from "../config/env";
 import { SignOptions } from "jsonwebtoken";
-import { setAuthCookie } from "../lib/auth/cookies";
+import { clearAuthCookie, setAuthCookie } from "../lib/auth/cookies";
 import { AppError } from "../lib/errors";
 import { auth } from "../middleware/auth";
 export const authRouter = express.Router();
@@ -100,4 +100,17 @@ authRouter.get("/me", auth, (req, res) => {
       userId: req.user.userId,
     },
   });
+});
+
+authRouter.post("/logout", auth, (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  try {
+    clearAuthCookie(res);
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    logger.error(`Log Out failed with error: ${error}`);
+    return next(new AppError("Log Out failed", 500));
+  }
 });
