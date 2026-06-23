@@ -13,6 +13,7 @@ import { env } from "../config/env";
 import { SignOptions } from "jsonwebtoken";
 import { setAuthCookie } from "../lib/auth/cookies";
 import { AppError } from "../lib/errors";
+import { auth } from "../middleware/auth";
 export const authRouter = express.Router();
 
 authRouter.post("/signup", async (req, res, next) => {
@@ -88,4 +89,15 @@ authRouter.post("/login", async (req, res, next) => {
     logger.error(`Log In failed with error: ${error}`);
     return next(new AppError("Log In failed", 500));
   }
+});
+
+authRouter.get("/me", auth, (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  return res.status(200).json({
+    user: {
+      userId: req.user.userId,
+    },
+  });
 });
