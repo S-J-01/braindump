@@ -1,7 +1,7 @@
 import { Response, CookieOptions } from "express";
 import { env } from "../../config/env";
 
-const authCookieName = "jwtTokenCookie";
+export const authCookieName = "jwtTokenCookie";
 
 const authCookieOptions: CookieOptions = {
   maxAge: 60 * 60 * 1000,
