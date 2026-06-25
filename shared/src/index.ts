@@ -11,3 +11,7 @@ export type {
   LinkEntry,
   LinkEntryInput,
 } from "./schemas/entry";
+
+export { SignUpInputSchema, LogInInputSchema } from "./schemas/auth";
+
+export type { SignUpInput, LogInInput } from "./schemas/auth";
