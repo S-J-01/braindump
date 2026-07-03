@@ -4,6 +4,7 @@ import { EntryInput, EntryInputSchema } from "@braindump/shared";
 import { logger } from "../lib/logger";
 import { Entry } from "../db/models/Entry";
 import { AppError } from "../lib/errors";
+import mongoose from "mongoose";
 export const entriesRouter = express.Router();
 entriesRouter.use(auth);
 
@@ -28,6 +29,7 @@ entriesRouter.post("/", async (req, res, next) => {
     });
 
     return res.status(201).json({
+      message: "Entry created successfully",
       entry: {
         id: newEntry.id,
       },
@@ -49,10 +51,62 @@ entriesRouter.get("/", async (req, res, next) => {
     });
 
     return res.status(200).json({
+      message: "Entries retrieved successfully",
       entries: entries,
     });
   } catch (error) {
     logger.error(`Entry retrieval failed with error ${error}`);
     return next(new AppError("Entry retrieval failed", 500));
+  }
+});
+
+entriesRouter.get("/:id", async (req, res, next) => {
+  const requiredEntryId = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(requiredEntryId)) {
+    return res.status(400).json({ message: "Invalid entry id" });
+  }
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  const userId = req.user.userId;
+  try {
+    const entry = await Entry.findOne({ userId: userId, _id: requiredEntryId });
+    if (!entry) {
+      return res.status(404).json({ message: "Entry not found" });
+    }
+    return res.status(200).json({
+      message: "Entry retrieved successfully",
+      entry: entry,
+    });
+  } catch (error) {
+    logger.error(`Entry retrieval failed with error ${error}`);
+    return next(new AppError("Entry retrieval failed", 500));
+  }
+});
+
+entriesRouter.delete("/:id", async (req, res, next) => {
+  const requiredEntryId = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(requiredEntryId)) {
+    return res.status(400).json({ message: "Invalid entry id" });
+  }
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  const userId = req.user.userId;
+  try {
+    const deletedEntry = await Entry.findOneAndDelete({
+      userId: userId,
+      _id: requiredEntryId,
+    });
+    if (!deletedEntry) {
+      return res.status(404).json({ message: "Entry not found" });
+    }
+    return res.status(200).json({
+      message: "Entry deleted successfully",
+      id: deletedEntry.id,
+    });
+  } catch (error) {
+    logger.error(`Entry deletion failed with error: ${error}`);
+    return next(new AppError("Entry deletion failed", 500));
   }
 });
