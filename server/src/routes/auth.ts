@@ -3,9 +3,9 @@ import {
   LogInInput,
   LogInInputSchema,
   SignUpInputSchema,
-} from "@braindump/shared/src";
+} from "@braindump/shared";
 import { logger } from "../lib/logger";
-import { SignUpInput } from "@braindump/shared/src";
+import { SignUpInput } from "@braindump/shared";
 import { User } from "../db/models/User";
 import { comparePassword, hashPassword } from "../lib/auth/hash";
 import { signAuthToken } from "../lib/auth/token";
