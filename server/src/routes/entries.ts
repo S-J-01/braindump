@@ -110,3 +110,44 @@ entriesRouter.delete("/:id", async (req, res, next) => {
     return next(new AppError("Entry deletion failed", 500));
   }
 });
+
+entriesRouter.patch("/:id", async (req, res, next) => {
+  const requiredEntryId = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(requiredEntryId)) {
+    return res.status(400).json({ message: "Invalid entry id" });
+  }
+  const isEntryInputValid = EntryInputSchema.safeParse(req.body);
+  if (!isEntryInputValid.success) {
+    logger.error(`Invalid entry input: ${isEntryInputValid.error}`);
+    return res.status(400).json({ message: "Entry update failed" });
+  }
+  const entryUpdate: EntryInput = isEntryInputValid.data;
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  const userId = req.user.userId;
+  try {
+    const updatedEntry = await Entry.findOneAndUpdate(
+      { _id: requiredEntryId, userId: userId },
+      {
+        type: entryUpdate.type,
+        title: entryUpdate.title,
+        tags: entryUpdate.tags,
+        data: entryUpdate.data,
+      },
+      {
+        returnDocument: "after",
+      },
+    );
+    if (!updatedEntry) {
+      return res.status(404).json({ message: "Entry not found" });
+    }
+    return res.status(200).json({
+      message: "Entry updated successfully",
+      entry: updatedEntry,
+    });
+  } catch (error) {
+    logger.error(`Entry update failed with error: ${error}`);
+    return next(new AppError("Entry update failed", 500));
+  }
+});
