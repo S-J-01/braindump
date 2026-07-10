@@ -3,6 +3,8 @@ export {
   EntryInputSchema,
   LinkEntrySchema,
   LinkEntryInputSchema,
+  NoteEntrySchema,
+  NoteEntryInputSchema,
 } from "./schemas/entry";
 
 export type {
@@ -10,6 +12,8 @@ export type {
   EntryInput,
   LinkEntry,
   LinkEntryInput,
+  NoteEntry,
+  NoteEntryInput,
 } from "./schemas/entry";
 
 export { SignUpInputSchema, LogInInputSchema } from "./schemas/auth";
