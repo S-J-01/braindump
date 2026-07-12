@@ -8,7 +8,7 @@ const EntrySchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["link"],
+      enum: ["link", "note"],
       required: true,
     },
     title: {
@@ -22,9 +22,11 @@ const EntrySchema = new mongoose.Schema(
     data: {
       url: {
         type: String,
-        required: true,
       },
       description: {
+        type: String,
+      },
+      content: {
         type: String,
       },
     },
