@@ -14,9 +14,10 @@ import { SignOptions } from "jsonwebtoken";
 import { clearAuthCookie, setAuthCookie } from "../lib/auth/cookies";
 import { AppError } from "../lib/errors";
 import { auth } from "../middleware/auth";
+import { authRateLimiter } from "../middleware/rateLimit";
 export const authRouter = express.Router();
 
-authRouter.post("/signup", async (req, res, next) => {
+authRouter.post("/signup", authRateLimiter, async (req, res, next) => {
   const isSignUpInputValid = SignUpInputSchema.safeParse(req.body);
   if (!isSignUpInputValid.success) {
     logger.error(`Sign Up failed with error: ${isSignUpInputValid.error}`);
@@ -54,7 +55,7 @@ authRouter.post("/signup", async (req, res, next) => {
   }
 });
 
-authRouter.post("/login", async (req, res, next) => {
+authRouter.post("/login", authRateLimiter, async (req, res, next) => {
   const isLogInInputValid = LogInInputSchema.safeParse(req.body);
   if (!isLogInInputValid.success) {
     logger.error(`Log In failed with error: ${isLogInInputValid.error}`);
