@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const EntrySchema = new mongoose.Schema(
   {
@@ -35,5 +35,6 @@ const EntrySchema = new mongoose.Schema(
     timestamps: true,
   },
 );
-
+export type EntrySchemaType = InferSchemaType<typeof EntrySchema>;
+export type EntryDocument = mongoose.HydratedDocument<EntrySchemaType>;
 export const Entry = mongoose.model("Entry", EntrySchema);
