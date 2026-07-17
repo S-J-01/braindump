@@ -5,6 +5,7 @@ import { logger } from "../lib/logger";
 import { Entry } from "../db/models/Entry";
 import { AppError } from "../lib/errors";
 import mongoose from "mongoose";
+import { serializeEntry } from "../lib/entrySerializer";
 export const entriesRouter = express.Router();
 entriesRouter.use(auth);
 
@@ -27,12 +28,10 @@ entriesRouter.post("/", async (req, res, next) => {
       tags: entryInput.tags,
       data: entryInput.data,
     });
-
+    const serializedNewEntry = serializeEntry(newEntry);
     return res.status(201).json({
       message: "Entry created successfully",
-      entry: {
-        id: newEntry.id,
-      },
+      entry: serializedNewEntry,
     });
   } catch (error) {
     logger.error(`Entry creation failed with error ${error}`);
@@ -50,9 +49,10 @@ entriesRouter.get("/", async (req, res, next) => {
       createdAt: -1,
     });
 
+    const serializedEntries = entries.map((entry) => serializeEntry(entry));
     return res.status(200).json({
       message: "Entries retrieved successfully",
-      entries: entries,
+      entries: serializedEntries,
     });
   } catch (error) {
     logger.error(`Entry retrieval failed with error ${error}`);
@@ -74,9 +74,10 @@ entriesRouter.get("/:id", async (req, res, next) => {
     if (!entry) {
       return res.status(404).json({ message: "Entry not found" });
     }
+    const serializedEntry = serializeEntry(entry);
     return res.status(200).json({
       message: "Entry retrieved successfully",
-      entry: entry,
+      entry: serializedEntry,
     });
   } catch (error) {
     logger.error(`Entry retrieval failed with error ${error}`);
@@ -101,9 +102,10 @@ entriesRouter.delete("/:id", async (req, res, next) => {
     if (!deletedEntry) {
       return res.status(404).json({ message: "Entry not found" });
     }
+    const serializedDeletedEntry = serializeEntry(deletedEntry);
     return res.status(200).json({
       message: "Entry deleted successfully",
-      id: deletedEntry.id,
+      entry: serializedDeletedEntry,
     });
   } catch (error) {
     logger.error(`Entry deletion failed with error: ${error}`);
@@ -142,9 +144,10 @@ entriesRouter.patch("/:id", async (req, res, next) => {
     if (!updatedEntry) {
       return res.status(404).json({ message: "Entry not found" });
     }
+    const serializedUpdatedEntry = serializeEntry(updatedEntry);
     return res.status(200).json({
       message: "Entry updated successfully",
-      entry: updatedEntry,
+      entry: serializedUpdatedEntry,
     });
   } catch (error) {
     logger.error(`Entry update failed with error: ${error}`);
