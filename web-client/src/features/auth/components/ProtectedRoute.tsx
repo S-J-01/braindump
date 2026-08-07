@@ -7,7 +7,7 @@ export const ProtectedRoute = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  if (data === null) {
+  if (!data) {
     return <Navigate replace to="/login" />;
   }
   return <Outlet />;
