@@ -2,8 +2,9 @@ import { useState, type SubmitEventHandler } from "react";
 import { AuthCard } from "../features/auth/components/AuthCard";
 import { useLogin } from "../features/auth/mutations";
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
-import { authQueryKeys } from "../features/auth/queries";
+import { Navigate, useNavigate } from "react-router";
+import { authQueryKeys, useCurrentUser } from "../features/auth/queries";
+
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,6 +20,13 @@ export const Login = () => {
     navigate("/app");
   };
 
+  const { data, isLoading } = useCurrentUser();
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (!data) {
+    return <Navigate replace to="/app" />;
+  }
   return (
     <AuthCard title="Log In" subtitle="Log In To Continue">
       <form onSubmit={handleSubmit}>
