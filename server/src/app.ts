@@ -5,9 +5,15 @@ import { notFound } from "./middleware/notFound";
 import { errorHandler } from "./middleware/errorHandler";
 import { httpLogger } from "./lib/logger";
 import cookieParser from "cookie-parser";
+import { env } from "./config/env";
 export const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: env.FRONTEND_ORIGIN,
+    credentials: true,
+  }),
+);
 app.use(httpLogger);
 app.use(express.json());
 app.use(cookieParser());
