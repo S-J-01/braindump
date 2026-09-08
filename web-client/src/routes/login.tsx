@@ -24,7 +24,7 @@ export const Login = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  if (!data) {
+  if (data) {
     return <Navigate replace to="/app" />;
   }
   return (

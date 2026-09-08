@@ -26,7 +26,7 @@ export const Signup = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  if (!data) {
+  if (data) {
     return <Navigate replace to="/app" />;
   }
   return (
