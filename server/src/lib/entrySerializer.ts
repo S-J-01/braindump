@@ -1,24 +1,11 @@
 import { EntryDocument } from "../db/models/Entry";
 
-type EntryResponse = {
-  id: string;
-  userId: string;
-  type: "link" | "note";
-  title: string;
-  tags: string[];
-  data: {
-    url?: string;
-    description?: string;
-    content?: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-};
+import { SerializedEntry } from "@braindump/shared";
 
 export const serializeEntry = (
   responseDocument: EntryDocument,
-): EntryResponse => {
-  const serializedEntry: EntryResponse = {
+): SerializedEntry => {
+  const serializedEntry: SerializedEntry = {
     id: responseDocument._id.toString(),
     userId: responseDocument.userId,
     type: responseDocument.type,
