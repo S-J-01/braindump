@@ -1,11 +1,11 @@
 import type { SerializedEntry } from "@braindump/shared";
 
-export type ListEntriesResponse = {
+export type ListAllEntriesResponse = {
   message: string;
   entries: SerializedEntry[];
 };
 
-export type GetEntryResponse = {
+export type GetEntryByIdResponse = {
   message: string;
   entry: SerializedEntry;
 };
