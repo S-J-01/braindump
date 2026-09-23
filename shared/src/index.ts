@@ -19,3 +19,4 @@ export type {
 export { SignUpInputSchema, LogInInputSchema } from "./schemas/auth";
 
 export type { SignUpInput, LogInInput } from "./schemas/auth";
+export type { SerializedEntry } from "./types/entry";
