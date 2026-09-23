@@ -3,6 +3,7 @@ import { useLogout } from "../features/auth/mutations";
 import { authQueryKeys, useCurrentUser } from "../features/auth/queries";
 import { useNavigate } from "react-router";
 import { useEntries } from "../features/entries/queries";
+import { EntryForm } from "../features/entries/components/EntryForm";
 
 export const AppPage = () => {
   const currentUserQuery = useCurrentUser();
@@ -36,7 +37,7 @@ export const AppPage = () => {
           </button>
 
           {logoutMutation.isError ? <p>Logout failed</p> : null}
-
+          <EntryForm userId={currentUserQuery.data.user.userId}></EntryForm>
           <section>
             <h1>Your entries</h1>
 

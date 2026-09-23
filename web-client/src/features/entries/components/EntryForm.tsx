@@ -4,8 +4,13 @@ import {
   type SubmitEventHandler,
 } from "react";
 import { useCreateEntry } from "../mutations";
+import { useQueryClient } from "@tanstack/react-query";
+import { entryQueryKey } from "../queries";
+export type EntryFormProps = {
+  userId: string;
+};
 
-export const EntryForm = () => {
+export const EntryForm = ({ userId }: EntryFormProps) => {
   const [entryType, setEntryType] = useState<"link" | "note">("link");
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
@@ -13,6 +18,15 @@ export const EntryForm = () => {
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
   const createEntryMutation = useCreateEntry();
+  const queryClient = useQueryClient();
+  const resetForm = () => {
+    setEntryType("link");
+    setTitle("");
+    setTags("");
+    setUrl("");
+    setDescription("");
+    setContent("");
+  };
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
@@ -44,6 +58,10 @@ export const EntryForm = () => {
           };
     try {
       await createEntryMutation.mutateAsync(entryInput);
+      await queryClient.invalidateQueries({
+        queryKey: entryQueryKey.list(userId),
+      });
+      resetForm();
     } catch (error) {
       console.error("Failed to add entry", error);
     }
