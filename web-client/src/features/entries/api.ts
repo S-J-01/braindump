@@ -27,10 +27,13 @@ export const createEntry = async (
   return response.data;
 };
 
-export const updateEntry = async (
-  entryId: string,
-  input: EntryInput,
-): Promise<UpdateEntryResponse> => {
+export const updateEntry = async ({
+  entryId,
+  input,
+}: {
+  entryId: string;
+  input: EntryInput;
+}): Promise<UpdateEntryResponse> => {
   const response = await apiClient.patch(`/entries/${entryId}`, input);
   return response.data;
 };
