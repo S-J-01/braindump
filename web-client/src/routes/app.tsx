@@ -4,6 +4,7 @@ import { authQueryKeys, useCurrentUser } from "../features/auth/queries";
 import { useNavigate } from "react-router";
 import { useEntries } from "../features/entries/queries";
 import { EntryForm } from "../features/entries/components/EntryForm";
+import { EntryList } from "../features/entries/components/EntryList";
 
 export const AppPage = () => {
   const currentUserQuery = useCurrentUser();
@@ -50,26 +51,7 @@ export const AppPage = () => {
             ) : null}
 
             {entriesQuery.data && entriesQuery.data.entries.length > 0 ? (
-              <ul>
-                {entriesQuery.data.entries.map((entry) => (
-                  <li key={entry.id}>
-                    <h2>{entry.title}</h2>
-                    <p>Type: {entry.type}</p>
-
-                    {entry.tags.length > 0 ? (
-                      <p>Tags: {entry.tags.join(", ")}</p>
-                    ) : null}
-
-                    {entry.type === "link" && entry.data.url ? (
-                      <a href={entry.data.url}>{entry.data.url}</a>
-                    ) : null}
-
-                    {entry.type === "note" && entry.data.content ? (
-                      <p>{entry.data.content}</p>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
+              <EntryList entries={entriesQuery.data.entries}></EntryList>
             ) : null}
           </section>
         </>
