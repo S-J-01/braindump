@@ -2,8 +2,16 @@ import type { SerializedEntry } from "@braindump/shared";
 import { useDeleteEntry } from "../mutations";
 import { useQueryClient } from "@tanstack/react-query";
 import { entryQueryKey } from "../queries";
-
-export const EntryList = ({ entries }: { entries: SerializedEntry[] }) => {
+type EntryListProps = {
+  entries: SerializedEntry[];
+  editingEntryID: string | null;
+  onEdit: (entryId: string) => void;
+};
+export const EntryList = ({
+  entries,
+  editingEntryID,
+  onEdit,
+}: EntryListProps) => {
   const deleteEntryMutation = useDeleteEntry();
   const queryClient = useQueryClient();
   const handleDelete = async (entryId: string, userId: string) => {
@@ -38,8 +46,17 @@ export const EntryList = ({ entries }: { entries: SerializedEntry[] }) => {
             ) : null}
             <button
               type="button"
+              onClick={() => onEdit(entry.id)}
+              disabled={Boolean(editingEntryID)}
+            >
+              Edit
+            </button>
+            <button
+              type="button"
               onClick={() => handleDelete(entry.id, entry.userId)}
-              disabled={deleteEntryMutation.isPending}
+              disabled={
+                deleteEntryMutation.isPending || Boolean(editingEntryID)
+              }
             >
               {deleteEntryMutation.variables === entry.id &&
               deleteEntryMutation.isPending
