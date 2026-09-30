@@ -47,7 +47,9 @@ export const EntryList = ({
             <button
               type="button"
               onClick={() => onEdit(entry.id)}
-              disabled={Boolean(editingEntryID)}
+              disabled={
+                Boolean(editingEntryID) || deleteEntryMutation.isPending
+              }
             >
               Edit
             </button>
