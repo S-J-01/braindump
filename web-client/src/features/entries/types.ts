@@ -14,3 +14,13 @@ export type CreateEntryResponse = {
   message: string;
   entry: SerializedEntry;
 };
+
+export type UpdateEntryResponse = {
+  message: string;
+  entry: SerializedEntry;
+};
+
+export type DeleteEntryResponse = {
+  message: string;
+  entry: SerializedEntry;
+};

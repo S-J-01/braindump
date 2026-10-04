@@ -4,8 +4,12 @@ import { authQueryKeys, useCurrentUser } from "../features/auth/queries";
 import { useNavigate } from "react-router";
 import { useEntries } from "../features/entries/queries";
 import { EntryForm } from "../features/entries/components/EntryForm";
+import { EntryList } from "../features/entries/components/EntryList";
+import { useState } from "react";
+import { EditEntryForm } from "../features/entries/components/EditEntryForm";
 
 export const AppPage = () => {
+  const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
   const currentUserQuery = useCurrentUser();
 
   const userId = currentUserQuery.data?.user.userId;
@@ -13,6 +17,15 @@ export const AppPage = () => {
   const logoutMutation = useLogout();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const selectedEntry = entriesQuery.data?.entries.find(
+    (entry) => entry.id === editingEntryId,
+  );
+  const handleStartEdit = (entryId: string) => {
+    setEditingEntryId(entryId);
+  };
+  const handleCloseEdit = () => {
+    setEditingEntryId(null);
+  };
   const handleLogout = async () => {
     await logoutMutation.mutateAsync();
     await queryClient.invalidateQueries({
@@ -37,7 +50,18 @@ export const AppPage = () => {
           </button>
 
           {logoutMutation.isError ? <p>Logout failed</p> : null}
-          <EntryForm userId={currentUserQuery.data.user.userId}></EntryForm>
+          <div>
+            <div hidden={Boolean(editingEntryId)}>
+              <EntryForm userId={currentUserQuery.data.user.userId}></EntryForm>
+            </div>
+            {selectedEntry ? (
+              <EditEntryForm
+                selectedEntry={selectedEntry}
+                onClose={handleCloseEdit}
+              ></EditEntryForm>
+            ) : null}
+          </div>
+
           <section>
             <h1>Your entries</h1>
 
@@ -50,26 +74,11 @@ export const AppPage = () => {
             ) : null}
 
             {entriesQuery.data && entriesQuery.data.entries.length > 0 ? (
-              <ul>
-                {entriesQuery.data.entries.map((entry) => (
-                  <li key={entry.id}>
-                    <h2>{entry.title}</h2>
-                    <p>Type: {entry.type}</p>
-
-                    {entry.tags.length > 0 ? (
-                      <p>Tags: {entry.tags.join(", ")}</p>
-                    ) : null}
-
-                    {entry.type === "link" && entry.data.url ? (
-                      <a href={entry.data.url}>{entry.data.url}</a>
-                    ) : null}
-
-                    {entry.type === "note" && entry.data.content ? (
-                      <p>{entry.data.content}</p>
-                    ) : null}
-                  </li>
-                ))}
-              </ul>
+              <EntryList
+                entries={entriesQuery.data.entries}
+                onEdit={handleStartEdit}
+                editingEntryID={editingEntryId}
+              ></EntryList>
             ) : null}
           </section>
         </>
