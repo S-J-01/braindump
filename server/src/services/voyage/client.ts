@@ -6,7 +6,10 @@ export const getVoyageClient = (): VoyageAIClient => {
     throw new Error("Voyage API key is required for generating embeddings");
   }
   if (!voyageClient) {
-    voyageClient = new VoyageAIClient({ apiKey: env.VOYAGE_API_KEY });
+    voyageClient = new VoyageAIClient({
+      apiKey: env.VOYAGE_API_KEY,
+      environment: "https://ai.mongodb.com/v1/embeddings",
+    });
   }
   return voyageClient;
 };
