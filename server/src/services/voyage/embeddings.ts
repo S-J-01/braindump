@@ -2,19 +2,19 @@ import { env } from "../../config/env";
 import { getVoyageClient } from "./client";
 const outputDimension = 1024;
 export const generateEmbeddings = async (
-  texts: string[],
+  chunkTexts: string[],
 ): Promise<number[][]> => {
-  if (texts.length === 0) {
+  if (chunkTexts.length === 0) {
     throw new Error("Input text array cannot be empty");
   }
-  if (texts.some((text) => text.trim().length === 0)) {
+  if (chunkTexts.some((text) => text.trim().length === 0)) {
     throw new Error("Input texts must not contain blank strings");
   }
   const voyageClient = getVoyageClient();
   let voyageResponse;
   try {
     voyageResponse = await voyageClient.embed({
-      input: texts,
+      input: chunkTexts,
       model: env.RAG_EMBEDDING_MODEL,
       inputType: "document",
       outputDimension: outputDimension,
@@ -29,18 +29,18 @@ export const generateEmbeddings = async (
   if (!data) {
     throw new Error("Response data is undefined");
   }
-  if (data.length !== texts.length) {
+  if (data.length !== chunkTexts.length) {
     throw new Error("Missing embeddings in response");
   }
 
-  const orderedVectors: number[][] = new Array<number[]>(texts.length);
+  const orderedVectors: number[][] = new Array<number[]>(chunkTexts.length);
   const indexSet = new Set<number>();
   for (const item of data) {
     if (
       item.index === undefined ||
       !Number.isInteger(item.index) ||
       item.index < 0 ||
-      item.index >= texts.length
+      item.index >= chunkTexts.length
     ) {
       throw new Error(`Invalid index at ${item.index}`);
     }

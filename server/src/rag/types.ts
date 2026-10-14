@@ -18,3 +18,7 @@ export type RagChunk = {
   chunkIndex: number;
 };
 
+export type EmbeddedRagChunk = RagChunk & {
+  embedding: number[];
+  embeddingModel: string;
+};
