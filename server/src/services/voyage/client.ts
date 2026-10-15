@@ -8,7 +8,7 @@ export const getVoyageClient = (): VoyageAIClient => {
   if (!voyageClient) {
     voyageClient = new VoyageAIClient({
       apiKey: env.VOYAGE_API_KEY,
-      environment: "https://ai.mongodb.com/v1/embeddings",
+      environment: env.VOYAGE_API_BASE_URL,
     });
   }
   return voyageClient;
