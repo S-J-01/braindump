@@ -12,6 +12,9 @@ const envSchema = z.object({
     .trim()
     .min(1)
     .regex(/^\d+(ms|[smhdwy])$/),
+  VOYAGE_API_KEY: z.string().optional(),
+  RAG_EMBEDDING_MODEL: z.string().default("voyage-4-lite"),
+  VOYAGE_API_BASE_URL: z.url().default("https://ai.mongodb.com/v1"),
 });
 
 export const env = envSchema.parse(process.env);
