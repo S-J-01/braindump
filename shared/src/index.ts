@@ -1,3 +1,5 @@
+import { QuestionInputSchema } from "./schemas/question";
+
 export {
   EntrySchema,
   EntryInputSchema,
@@ -20,3 +22,5 @@ export { SignUpInputSchema, LogInInputSchema } from "./schemas/auth";
 
 export type { SignUpInput, LogInInput } from "./schemas/auth";
 export type { SerializedEntry } from "./types/entry";
+export { QuestionInputSchema } from "./schemas/question";
+export type { QuestionInput } from "./schemas/question";

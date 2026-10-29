@@ -3,6 +3,7 @@ import { getVoyageClient } from "./client";
 const outputDimension = 1024;
 export const generateEmbeddings = async (
   chunkTexts: string[],
+  inputType: "document" | "query" = "document",
 ): Promise<number[][]> => {
   if (chunkTexts.length === 0) {
     throw new Error("Input text array cannot be empty");
@@ -16,7 +17,7 @@ export const generateEmbeddings = async (
     voyageResponse = await voyageClient.embed({
       input: chunkTexts,
       model: env.RAG_EMBEDDING_MODEL,
-      inputType: "document",
+      inputType: inputType,
       outputDimension: outputDimension,
     });
   } catch (error) {

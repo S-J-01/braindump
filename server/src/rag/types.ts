@@ -22,3 +22,11 @@ export type EmbeddedRagChunk = RagChunk & {
   embedding: number[];
   embeddingModel: string;
 };
+
+export type RetrievedRagChunk = Omit<
+  EmbeddedRagChunk,
+  "userId" | "embedding"
+> & {
+  chunkId: string;
+  score: number;
+};
