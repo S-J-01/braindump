@@ -47,3 +47,7 @@ export type RagContext = {
   contextString: string;
   sources: SourceReference[];
 };
+
+export type GeneratedAnswer = {
+  answer: string;
+};
