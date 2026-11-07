@@ -51,3 +51,7 @@ export type RagContext = {
 export type GeneratedAnswer = {
   answer: string;
 };
+
+export type GeneratedAnswerWithSourcesSupplied = GeneratedAnswer & {
+  sourcesSuppliedToLLM: SourceReference[];
+};
