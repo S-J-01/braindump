@@ -15,6 +15,8 @@ const envSchema = z.object({
   VOYAGE_API_KEY: z.string().optional(),
   RAG_EMBEDDING_MODEL: z.string().default("voyage-4-lite"),
   VOYAGE_API_BASE_URL: z.url().default("https://ai.mongodb.com/v1"),
+  OPENAI_API_KEY: z.string().optional(),
+  RAG_GENERATION_MODEL: z.string().default("gpt-6-luna"),
 });
 
 export const env = envSchema.parse(process.env);

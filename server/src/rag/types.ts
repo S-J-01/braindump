@@ -30,3 +30,28 @@ export type RetrievedRagChunk = Omit<
   chunkId: string;
   score: number;
 };
+
+export type SourceReference = {
+  label: string;
+  chunkId: string;
+  score: number;
+  sourceUrl?: string | undefined;
+  title: string;
+  sourceType: "link" | "note";
+  sourceId: string;
+  chunkIndex: number;
+  tags: string[];
+};
+
+export type RagContext = {
+  contextString: string;
+  sources: SourceReference[];
+};
+
+export type GeneratedAnswer = {
+  answer: string;
+};
+
+export type GeneratedAnswerWithSourcesSupplied = GeneratedAnswer & {
+  sourcesSuppliedToLLM: SourceReference[];
+};

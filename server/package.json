@@ -14,9 +14,11 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@ai-sdk/openai": "^4.0.106",
     "@braindump/shared": "*",
     "@langchain/core": "^1.2.17",
     "@langchain/textsplitters": "^1.0.2",
+    "ai": "^7.0.158",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
