@@ -2,10 +2,7 @@ import express from "express";
 import { auth } from "../middleware/auth";
 import { QuestionInputSchema } from "@braindump/shared";
 import { logger } from "../lib/logger";
-import {
-  GeneratedAnswerWithSourcesSupplied,
-  RetrievedRagChunk,
-} from "../rag/types";
+import { RagAnswerResponse, RetrievedRagChunk } from "../rag/types";
 import { retrieveRagChunks } from "../rag/retrieveRagChunks";
 import { AppError } from "../lib/errors";
 import { answerRagQuestion } from "../rag/answerRagQuestion";
@@ -53,13 +50,15 @@ ragRouter.post("/ask", async (req, res, next) => {
   }
   const userId = req.user.userId;
   try {
-    const generatedAnswerWithSourcesSupplied: GeneratedAnswerWithSourcesSupplied =
-      await answerRagQuestion(question, userId);
+    const ragAnswerResponse: RagAnswerResponse = await answerRagQuestion(
+      question,
+      userId,
+    );
     return res.status(200).json({
       message: "Answer generated from RAG successfully",
-      answer: generatedAnswerWithSourcesSupplied.answer,
-      sourcesSuppliedToLLM:
-        generatedAnswerWithSourcesSupplied.sourcesSuppliedToLLM,
+      answer: ragAnswerResponse.answer,
+      sourcesSuppliedToLLM: ragAnswerResponse.sourcesSuppliedToLLM,
+      citations: ragAnswerResponse.citations,
     });
   } catch (error) {
     logger.error("Answer generation from RAG failed ");

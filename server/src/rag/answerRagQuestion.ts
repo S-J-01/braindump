@@ -3,7 +3,7 @@ import { generateAnswer } from "./generateAnswer";
 import { retrieveRagChunks } from "./retrieveRagChunks";
 import {
   GeneratedAnswer,
-  GeneratedAnswerWithSourcesSupplied,
+  RagAnswerResponse,
   RagContext,
   RetrievedRagChunk,
 } from "./types";
@@ -11,7 +11,7 @@ import {
 export const answerRagQuestion = async (
   question: string,
   userId: string,
-): Promise<GeneratedAnswerWithSourcesSupplied> => {
+): Promise<RagAnswerResponse> => {
   const retrievedRagChunkArray: RetrievedRagChunk[] = await retrieveRagChunks(
     question,
     userId,
@@ -25,5 +25,6 @@ export const answerRagQuestion = async (
   return {
     answer: generatedAnswer.answer,
     sourcesSuppliedToLLM: ragContext.sources,
+    citations: [],
   };
 };

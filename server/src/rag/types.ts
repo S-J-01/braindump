@@ -52,6 +52,7 @@ export type GeneratedAnswer = {
   answer: string;
 };
 
-export type GeneratedAnswerWithSourcesSupplied = GeneratedAnswer & {
+export type RagAnswerResponse = GeneratedAnswer & {
   sourcesSuppliedToLLM: SourceReference[];
+  citations: SourceReference[];
 };
