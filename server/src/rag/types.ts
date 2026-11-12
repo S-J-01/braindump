@@ -56,3 +56,9 @@ export type RagAnswerResponse = GeneratedAnswer & {
   sourcesSuppliedToLLM: SourceReference[];
   citations: SourceReference[];
 };
+
+export type ResolvedCitations = {
+  answer: string;
+  citations: SourceReference[];
+  unknownLabelCount: number;
+};
