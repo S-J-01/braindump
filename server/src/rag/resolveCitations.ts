@@ -1,5 +1,5 @@
 import { ResolvedCitations, SourceReference } from "./types";
-
+/* The resolveCitation function validates citation identities, not whether every factual claim is supported by its citation. */
 export const resolveCitations = (
   answerFromLLM: string,
   sourcesSuppliedToLLM: SourceReference[],
