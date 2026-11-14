@@ -1,3 +1,5 @@
+import type { SourceReference } from "@braindump/shared";
+export type { SourceReference };
 export type NormalizedRagEntry = {
   sourceId: string;
   userId: string;
@@ -29,18 +31,6 @@ export type RetrievedRagChunk = Omit<
 > & {
   chunkId: string;
   score: number;
-};
-
-export type SourceReference = {
-  label: string;
-  chunkId: string;
-  score: number;
-  sourceUrl?: string | undefined;
-  title: string;
-  sourceType: "link" | "note";
-  sourceId: string;
-  chunkIndex: number;
-  tags: string[];
 };
 
 export type RagContext = {
