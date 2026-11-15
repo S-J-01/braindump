@@ -7,6 +7,7 @@ import { EntryForm } from "../features/entries/components/EntryForm";
 import { EntryList } from "../features/entries/components/EntryList";
 import { useState } from "react";
 import { EditEntryForm } from "../features/entries/components/EditEntryForm";
+import { AskForm } from "../features/rag/components/AskForm";
 
 export const AppPage = () => {
   const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
@@ -80,6 +81,9 @@ export const AppPage = () => {
                 editingEntryID={editingEntryId}
               ></EntryList>
             ) : null}
+          </section>
+          <section>
+            <AskForm></AskForm>
           </section>
         </>
       )}
