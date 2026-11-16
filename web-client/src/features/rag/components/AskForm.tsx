@@ -10,12 +10,36 @@ export const AskForm = () => {
     const questionInput: QuestionInput = {
       question: question,
     };
+
     try {
       await askRagMutation.mutateAsync(questionInput);
     } catch (error) {
       console.error("Failed to answer question", error);
     }
   };
+  let answerInParts: string[] = [];
+  let renderedParts;
+  if (askRagMutation.data !== undefined) {
+    answerInParts = askRagMutation.data.answer.split(/(\[S\d+\])/);
+    renderedParts = answerInParts.map((part, index) => {
+      const matchingCitation = askRagMutation.data.citations.find(
+        (citation) => citation.label === part,
+      );
+      if (matchingCitation !== undefined) {
+        return (
+          <button
+            type="button"
+            key={index}
+            onClick={() => console.log(matchingCitation)}
+          >
+            {part}
+          </button>
+        );
+      }
+      return part;
+    });
+  }
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -29,7 +53,7 @@ export const AskForm = () => {
           {askRagMutation.isPending ? "Asking..." : "Ask Braindump"}
         </button>
         {askRagMutation.isError ? <p>Ask Braindump failed</p> : null}
-        {askRagMutation.data ? <p>{askRagMutation.data.answer}</p> : null}
+        {askRagMutation.data ? <p>{renderedParts}</p> : null}
       </form>
     </>
   );
