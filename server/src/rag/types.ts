@@ -1,3 +1,5 @@
+import type { SourceReference } from "@braindump/shared";
+export type { SourceReference };
 export type NormalizedRagEntry = {
   sourceId: string;
   userId: string;
@@ -31,18 +33,6 @@ export type RetrievedRagChunk = Omit<
   score: number;
 };
 
-export type SourceReference = {
-  label: string;
-  chunkId: string;
-  score: number;
-  sourceUrl?: string | undefined;
-  title: string;
-  sourceType: "link" | "note";
-  sourceId: string;
-  chunkIndex: number;
-  tags: string[];
-};
-
 export type RagContext = {
   contextString: string;
   sources: SourceReference[];
@@ -52,6 +42,13 @@ export type GeneratedAnswer = {
   answer: string;
 };
 
-export type GeneratedAnswerWithSourcesSupplied = GeneratedAnswer & {
+export type RagAnswerResponse = GeneratedAnswer & {
   sourcesSuppliedToLLM: SourceReference[];
+  citations: SourceReference[];
+};
+
+export type ResolvedCitations = {
+  answer: string;
+  citations: SourceReference[];
+  unknownLabelCount: number;
 };
